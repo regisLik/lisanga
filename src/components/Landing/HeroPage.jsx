@@ -1,9 +1,10 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { useState, useRef } from 'react';
 import './HeroPage.css';
 
 function HeroPage({ onStart, onNavigate }) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const scrollContainerRef = useRef(null);
   
   const slides = [0, 1, 2, 3];
@@ -65,7 +66,28 @@ function HeroPage({ onStart, onNavigate }) {
             </div>
           </div>
         </div>
+
+        {/* Burger Button */}
+        <button 
+          className="burger-menu-btn" 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Menu"
+        >
+          {isMobileMenuOpen ? <X size={24} color="var(--color-white)" /> : <Menu size={24} color="var(--color-white)" />}
+        </button>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-content">
+          <a href="#about" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); onNavigate('about'); }}>À propos de nous</a>
+          <div className="mobile-menu-section-title">Ressources</div>
+          <button onClick={() => { setIsMobileMenuOpen(false); onNavigate('resources/emergency'); }}>Annuaire d'Urgence</button>
+          <button onClick={() => { setIsMobileMenuOpen(false); onNavigate('resources/legal'); }}>Droits & Démarches</button>
+          <button onClick={() => { setIsMobileMenuOpen(false); onNavigate('resources/groups'); }}>Groupes de Soutien</button>
+          <button onClick={() => { setIsMobileMenuOpen(false); onNavigate('resources/psy'); }}>Aide Psychologique</button>
+        </div>
+      </div>
 
       {/* Dot Pagination (Progress Bar) */}
       <div className="dot-pagination">
